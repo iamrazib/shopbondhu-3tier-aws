@@ -3,7 +3,7 @@
 body { margin: 0; min-height: 100vh; background: radial-gradient(ellipse at top left, #dcecf9 0, transparent 48%), #f4f7fb; }
 .app-shell { max-width: 760px; padding: 46px 20px 32px; margin: auto; }
 .eyebrow { color: #3976aa; font-size: 12px; font-weight: 800; letter-spacing: .17em; margin-bottom: 26px; }
-header { display: flex; align-items: center; gap: 18px; margin-bottom: 30px; }
+header { display: flex; align-items: center; gap: 24px; }
 .logo-mark { background: linear-gradient(135deg,#1674c9,#15a38d); color: white; border-radius: 18px; display: grid; place-items: center; width: 66px; height: 66px; font-size: 35px; box-shadow: 0 12px 26px #166d9d33; }
 h1 { font-size: clamp(26px,5vw,36px); letter-spacing: -1px; margin: 0 0 4px; }
 .subtitle { margin: 0; color: #6b7c90; font-size: 15px; }
@@ -31,22 +31,51 @@ li input[type="checkbox"] { flex: none; width: 18px; height: 18px; accent-color:
 li .remove { color: #a03c4a; background: #fff0f2; padding: 8px 12px; font-size: 12px; }
 .empty { text-align: center; color: #8290a0; padding: 30px 0; }
 footer { margin-top: 24px; text-align: center; color: #74869b; line-height: 1.7; font-size: 12px; }
-@media(max-width: 520px) { .panel { padding: 20px; } .input-row { flex-direction: column; } #add-button { width: 100%; } }
 
+@media (max-width: 600px) {
+    header {
+        gap: 14px;
+    }
+
+    .developer-credit {
+        padding: 9px 12px;
+        font-size: 13px;
+    }
+
+    .developer-text {
+        white-space: normal;
+    }
+}
+
+.header-content {
+    flex: 1;
+    min-width: 0;
+}
 .developer-credit {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    margin: 18px 0 0;
-    padding: 11px 18px;
+
+    width: fit-content;
+    max-width: 100%;
+
+    margin-top: 18px;
+    padding: 10px 16px;
+
     background: linear-gradient(135deg, #e0edff, #d9f5ef);
     border: 1px solid #b4d6ef;
     border-left: 4px solid #477ac0;
     border-radius: 12px;
+
     box-shadow: 0 4px 14px rgba(60, 110, 170, 0.12);
+
     color: #415873;
     font-size: 15px;
     font-weight: 500;
+}
+
+.developer-text {
+    white-space: nowrap;
 }
 
 .developer-credit strong {
@@ -59,11 +88,15 @@ footer { margin-top: 24px; text-align: center; color: #74869b; line-height: 1.7;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+
     width: 30px;
     height: 30px;
-    border-radius: 8px;
+
     background: #477ac0;
-    color: #ffffff;
+    color: white;
+    border-radius: 8px;
+
     font-size: 21px;
     font-weight: bold;
 }
