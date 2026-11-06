@@ -32,3 +32,38 @@ li .remove { color: #a03c4a; background: #fff0f2; padding: 8px 12px; font-size: 
 .empty { text-align: center; color: #8290a0; padding: 30px 0; }
 footer { margin-top: 24px; text-align: center; color: #74869b; line-height: 1.7; font-size: 12px; }
 @media(max-width: 520px) { .panel { padding: 20px; } .input-row { flex-direction: column; } #add-button { width: 100%; } }
+
+.developer-credit {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 18px 0 0;
+    padding: 11px 18px;
+    background: linear-gradient(135deg, #e0edff, #d9f5ef);
+    border: 1px solid #b4d6ef;
+    border-left: 4px solid #477ac0;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(60, 110, 170, 0.12);
+    color: #415873;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.developer-credit strong {
+    color: #174b91;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+}
+
+.developer-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: #477ac0;
+    color: #ffffff;
+    font-size: 21px;
+    font-weight: bold;
+}
