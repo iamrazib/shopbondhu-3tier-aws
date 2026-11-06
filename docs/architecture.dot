@@ -1,0 +1,38 @@
+digraph AWS3Tier {
+  graph [rankdir=TB, bgcolor="#ffffff", compound=true, pad="0.24", nodesep="0.46", ranksep="0.62", fontname="Arial", fontsize=18, label="ShopBondhu To-Do | Custom AWS VPC (10.0.0.0/16)", labelloc=t, labeljust=c];
+  node [fontname="Arial", fontsize=12, shape=box, style="filled,rounded", penwidth=1.4, margin="0.20,0.12"];
+  edge [fontname="Arial", fontsize=10, penwidth=1.6, color="#3D617D", arrowsize=0.72];
+  users [label="Browser users\nhttp(s)://WEB_PUBLIC_IP", shape=oval, fillcolor="#E8F3FF", color="#2C72AB"];
+  subgraph cluster_vpc {
+    label="Custom VPC 10.0.0.0/16"; fontname="Arial"; fontsize=14; color="#94AEC2"; bgcolor="#F8FBFF"; style="rounded";
+    igw [label="Internet Gateway\nshopbondhu-igw", shape=ellipse, fillcolor="#F5F0FF", color="#8066B9"];
+    subgraph cluster_public {
+      label="PUBLIC SUBNET | 10.0.1.0/24 | route 0.0.0.0/0 → IGW";
+      color="#92D3B7"; bgcolor="#EAFBF1"; style="rounded";
+      web [label="WEB TIER\nUbuntu EC2 + Nginx\n10.0.1.10 + Public IP\nHTML/CSS/JS + /api/ proxy\nSG: inbound TCP 80/443 from Internet", fillcolor="#FFFFFF", color="#33A878"];
+      nat [label="NAT Gateway + EIP\nPrivate outbound access ONLY\n(NO inbound forwarding)", fillcolor="#FFF7EA", color="#DBA244"];
+      {rank=same; web; nat;}
+    }
+    subgraph cluster_app {
+      label="PRIVATE APP SUBNET | 10.0.2.0/24 | route 0.0.0.0/0 → NAT";
+      color="#83B6EF"; bgcolor="#EBF4FF"; style="rounded";
+      app [label="APPLICATION TIER\nUbuntu EC2 + Flask/Gunicorn\n10.0.2.10 | NO Public IP\nsystemd service after reboot\nSG: inbound TCP 8000 from Web SG", fillcolor="#FFFFFF", color="#398BD1"];
+      app2 [label="BONUS: 2nd APP EC2\n10.0.2.11 | NO Public IP\nNginx upstream load balancing", style="filled,rounded,dashed", fillcolor="#FFFFFF", color="#83A2C5"];
+      {rank=same; app; app2;}
+    }
+    subgraph cluster_db {
+      label="PRIVATE DB SUBNET | 10.0.3.0/24 | route 0.0.0.0/0 → NAT";
+      color="#C1B0DD"; bgcolor="#F5F0FC"; style="rounded";
+      db [label="DATABASE TIER\nUbuntu EC2 + PostgreSQL\n10.0.3.10 | NO Public IP\npersistent tasks table\nSG: inbound TCP 5432 from App SG", fillcolor="#FFFFFF", color="#9170BB"];
+    }
+  }
+  users -> igw [label="TCP 80 / 443"];
+  igw -> web [label="Public HTTP(S)"];
+  web -> app [label="Private TCP 8000"];
+  app -> db [label="Private TCP 5432"];
+  web -> app2 [style=dashed, label="Bonus TCP 8000", color="#6B93B9"];
+  app2 -> db [style=dashed, label="TCP 5432", color="#6B93B9"];
+  app -> nat [style=dashed, label="Outbound updates / SSM", constraint=false, color="#C49A56"];
+  db -> nat [style=dashed, constraint=false, color="#C49A56"];
+  nat -> igw [style=dashed, label="Outbound Internet", constraint=false, color="#C49A56"];
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="ShopBondhu 3-tier AWS To-Do application">
+  <title>ShopBondhu | To-Do Manager</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main class="app-shell">
+    <div class="eyebrow">AWS 3-TIER PROJECT</div>
+    <header>
+      <div class="logo-mark" aria-hidden="true">✓</div>
+      <div>
+        <h1>ShopBondhu To-Do</h1>
+        <p class="subtitle">Make a plan. Stay focused. Get things done.</p>
+      </div>
+    </header>
+    <section class="panel" aria-labelledby="add-heading">
+      <h2 id="add-heading">Add a new task</h2>
+      <form id="task-form">
+        <label for="task-input">What needs to be done?</label>
+        <div class="input-row">
+          <input id="task-input" name="title" maxlength="150" placeholder="e.g. Finish AWS assignment" required autocomplete="off">
+          <button type="submit" id="add-button">+ Add task</button>
+        </div>
+      </form>
+      <p id="status" role="status" aria-live="polite"></p>
+    </section>
+    <section class="panel" aria-labelledby="tasks-heading">
+      <div class="task-header"><h2 id="tasks-heading">Your tasks</h2><span id="task-count" class="count">0 tasks</span></div>
+      <ul id="task-list"></ul>
+      <p id="empty" class="empty" hidden>Nothing here yet. Add your first task above!</p>
+    </section>
+    <footer>Web: Nginx · API: Flask · Database: PostgreSQL<br>Hosted on a custom AWS VPC</footer>
+  </main>
+</body>
+</html>

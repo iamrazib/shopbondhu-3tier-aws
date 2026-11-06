@@ -1,0 +1,24 @@
+flowchart TB
+    Users([Browser / User]) -->|HTTP 80 / HTTPS 443| IGW[Internet Gateway]
+    subgraph VPC["Custom VPC 10.0.0.0/16"]
+        IGW
+        subgraph PUBLIC["Public Subnet 10.0.1.0/24"]
+            WEB["Web EC2 + Nginx<br/>10.0.1.10 + public IP"]
+            NAT["NAT Gateway + Elastic IP<br/>Outbound only"]
+        end
+        subgraph APPNET["Private App Subnet 10.0.2.0/24"]
+            API["App EC2 + Flask/Gunicorn/systemd<br/>10.0.2.10 / NO public IP"]
+            API2["BONUS: App 2<br/>10.0.2.11 / NO public IP"]
+        end
+        subgraph DBNET["Private DB Subnet 10.0.3.0/24"]
+            DB[("DB EC2 + PostgreSQL<br/>10.0.3.10 / NO public IP")]
+        end
+        IGW --> WEB
+        WEB -->|"API TCP 8000 / web SG"| API
+        WEB -. "Nginx bonus upstream" .-> API2
+        API -->|"DB TCP 5432 / app SG"| DB
+        API2 -.-> DB
+        API -.->|"Outbound only"| NAT
+        DB -.->|"Outbound only"| NAT
+        NAT -.-> IGW
+    end
