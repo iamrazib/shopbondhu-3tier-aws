@@ -2,7 +2,7 @@
 
 A simple, working **three-tier To-Do application** for an AWS networking assignment. Built from scratch on a **custom Amazon VPC** with **EC2, Nginx, Flask/Gunicorn, and PostgreSQL**. Nginx is the **only public HTTP(S) entry point**. No ALB, NLB, RDS, Beanstalk, ECS, or EKS are used.
 
-**START HERE: [Complete numbered AWS deployment guide](docs/DEPLOYMENT_GUIDE.md)**. Follow its steps before attempting to install individual services.
+
 
 ![Architecture diagram](docs/architecture.png)
 
@@ -77,22 +77,21 @@ Browser UI and API share one public origin, so the browser needs **no CORS exemp
 
 ## Install order (AWS EC2 Session Manager)
 
-**First** complete networking, IAM role, and GitHub setup as in the [detailed guide](docs/DEPLOYMENT_GUIDE.md).
 
-On each EC2, use **EC2 -> Connect -> Session Manager**, then `sudo -i`. Clone the **public** GitHub repository; replace `YOUR_GITHUB_USERNAME`:
+On each EC2, use **EC2 -> Connect -> Session Manager**, then `sudo -i`. Clone the **public** GitHub repository; 
 
 ```bash
 apt-get update && apt-get install -y git
-git clone https://github.com/YOUR_GITHUB_USERNAME/shopbondhu-3tier-aws.git /tmp/shopbondhu-3tier-aws
+git clone https://github.com/iamrazib/shopbondhu-3tier-aws.git /tmp/shopbondhu-3tier-aws
 cd /tmp/shopbondhu-3tier-aws
 ```
 
-- **DB EC2 first:** `bash scripts/install-db.sh` (enter strong PostgreSQL password)
-- **App EC2 second:** `bash scripts/install-app.sh` (enter the SAME password)
+- **DB EC2 first:** `bash scripts/install-db.sh` 
+- **App EC2 second:** `bash scripts/install-app.sh` 
 - **Web EC2 last:** `bash scripts/install-web.sh`
 - **Optional bonus web after app2 installed:** `bash scripts/install-web.sh --two-apps`
 
-Visit `http://WEB_PUBLIC_IP/`, add two tasks, refresh, and observe persistence. Verify `http://WEB_PUBLIC_IP/api/health` returns a connected database status.
+Visit `http://13.201.116.67/`, add two tasks, refresh, and observe persistence. Verify `http://13.201.116.67/api/health` returns a connected database status.
 
 ## Verify backend survives reboot
 
@@ -104,7 +103,7 @@ sudo reboot
 systemctl is-active shopbondhu-api
 ```
 
-## Tests for API input validation (optional local)
+## Tests for API input validation 
 
 ```bash
 python3 -m venv .venv
@@ -113,15 +112,6 @@ pip install -r backend/requirements.txt
 python -m unittest discover -s tests -v
 ```
 
-On Windows PowerShell, activate with `.\.venv\Scripts\Activate.ps1` (depending on execution policy) or run `.\.venv\Scripts\python.exe -m unittest discover -s tests -v` directly. These tests check **invalid input handling only**; a successful full three-tier test requires deployed PostgreSQL and the actual AWS browser test.
-
-## Evidence / GitHub submission
-
-Add genuine screenshots in `screenshots/` matching `screenshots/README.md`, then commit and push. The architecture diagram is in `docs/architecture.png` and `docs/architecture.svg`. The [submission checklist](docs/SUBMISSION_CHECKLIST.md) contains every required proof item. Record actual issues in [Problems and Fixes](docs/PROBLEMS_AND_FIXES.md); do not submit examples as if they happened.
-
-## Cost warning
-
-A NAT Gateway incurs hourly and processed-data charges, and public IPv4 addresses can be billed. **After evidence is captured, stop all EC2 instances, delete the NAT Gateway, release the NAT Elastic IP, and clean up unused public IPv4 addresses.** Stopped instances can still incur **EBS storage** charges. Refer to [Part I: cleanup](docs/DEPLOYMENT_GUIDE.md).
 
 ## References
 
@@ -130,4 +120,4 @@ A NAT Gateway incurs hourly and processed-data charges, and public IPv4 addresse
 - [AWS Session Manager instance profile](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-getting-started-instance-profile.html)
 - [AWS VPC pricing](https://aws.amazon.com/vpc/pricing/)
 
-**Coursework scope:** one AZ, one NAT Gateway, and one database EC2 are selected to keep the architecture simple and inspectable, not as a claim of high availability. For real production, use backups, patch management, managed secrets, monitoring, redundant AZs, and a properly designed high-availability database.
+
